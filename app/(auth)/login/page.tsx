@@ -1,5 +1,8 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import axios from "axios"
 import {
   Card,
   CardContent,
@@ -10,11 +13,45 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
-
+import { useState } from "react"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation";
 export default function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const router = useRouter();
+
+  const [userData, setUserData] = useState({
+    email: "",
+    password: ""
+  })
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault(); // Prevents page refresh
+
+    if (!userData.email || !userData.password) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    try {
+      console.log("User Data:", userData);
+      const res = await axios.post("/api/auth/login", userData);
+      console.log(res.data);
+      localStorage.setItem('token', res.data.token);
+      toast.success("Login successful");
+      if (res.data.user?.stepsCompleted === 2) {
+        router.push("/");
+      }
+      else {
+        router.push("/user-data-collect");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong.");
+    }
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className={cn("grid place-items-center w-full", className)} {...props}>
@@ -26,7 +63,7 @@ export default function LoginForm({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
@@ -35,19 +72,27 @@ export default function LoginForm({
                     type="email"
                     placeholder="m@example.com"
                     required
+                    value={userData.email}
+                    onChange={(e) => setUserData({ ...userData, email: e.target.value })}
                   />
                 </div>
                 <div className="grid gap-2">
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
-                    <a
+                    <Link
                       href="#"
                       className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                     >
                       Forgot your password?
-                    </a>
+                    </Link>
                   </div>
-                  <Input id="password" type="password" required />
+                  <Input
+                    id="password"
+                    type="password"
+                    required
+                    value={userData.password}
+                    onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+                  />
                 </div>
                 <Button type="submit" className="w-full">
                   Login
@@ -69,4 +114,3 @@ export default function LoginForm({
     </div>
   )
 }
-
