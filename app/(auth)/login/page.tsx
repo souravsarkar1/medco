@@ -16,6 +16,8 @@ import Link from "next/link"
 import { useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react"
+
 export default function LoginForm({
   className,
   ...props
@@ -26,6 +28,7 @@ export default function LoginForm({
     email: "",
     password: ""
   })
+  const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault(); // Prevents page refresh
 
@@ -33,22 +36,29 @@ export default function LoginForm({
       toast.error("Please fill in all fields.");
       return;
     }
-
+    setIsLoading(true);
     try {
+
       console.log("User Data:", userData);
       const res = await axios.post("/api/auth/login", userData);
       console.log(res.data);
       localStorage.setItem('token', res.data.token);
       toast.success("Login successful");
       if (res.data.user?.stepsCompleted === 2) {
+        setIsLoading(false);
         router.push("/");
       }
       else {
+        setIsLoading(false);
         router.push("/user-data-collect");
       }
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong.");
+      setIsLoading(false);
+    }
+    finally {
+      setIsLoading(false);
     }
   }
 
@@ -95,7 +105,7 @@ export default function LoginForm({
                   />
                 </div>
                 <Button type="submit" className="w-full">
-                  Login
+                  {isLoading ? <Loader2 className="animate-spin" /> : "Login"}
                 </Button>
                 <Button variant="outline" className="w-full">
                   Login with Google

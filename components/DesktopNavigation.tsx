@@ -9,20 +9,11 @@ export function DesktopNavigation() {
         <Menu setActive={setActive}>
             <MenuItem setActive={setActive} active={active} item="Services">
                 <div className="grid grid-cols-2 gap-4 text-sm bg-black/95 p-4 rounded-lg shadow-2xl">
-                    <HoveredLink href="/general-consultation" className="text-gray-200 hover:text-white hover:bg-gray-800/50 p-2 rounded">
-                        General Consultation
+                    <HoveredLink href="/doctor" className="text-gray-200 hover:text-white hover:bg-gray-800/50 p-2 rounded">
+                        Our Services
                     </HoveredLink>
-                    <HoveredLink href="/telemedicine" className="text-gray-200 hover:text-white hover:bg-gray-800/50 p-2 rounded">
-                        Telemedicine
-                    </HoveredLink>
-                    <HoveredLink href="/diagnostics" className="text-gray-200 hover:text-white hover:bg-gray-800/50 p-2 rounded">
-                        Diagnostic Tests
-                    </HoveredLink>
-                    <HoveredLink href="/pharmacy" className="text-gray-200 hover:text-white hover:bg-gray-800/50 p-2 rounded">
-                        Pharmacy
-                    </HoveredLink>
-                    <HoveredLink href="/mental-health" className="text-gray-200 hover:text-white hover:bg-gray-800/50 p-2 rounded">
-                        Mental Health Services
+                    <HoveredLink href="/doctor#our-service-department" className="text-gray-200 hover:text-white hover:bg-gray-800/50 p-2 rounded">
+                        Our Services
                     </HoveredLink>
                 </div>
             </MenuItem>

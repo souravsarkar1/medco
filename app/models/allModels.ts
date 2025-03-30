@@ -5,9 +5,10 @@ const DoctorSchema = {
     // Professional Information
     personalInfo: {
         firstName: { type: String, required: true },
-        lastName: { type: String, required: true },
+        lastName: { type: String, required: false },
         email: { type: String, required: true, unique: true },
-        phoneNumber: { type: String, required: true },
+        password: { type: String, required: true },
+        phoneNumber: { type: String, required: false },
         profileImage: { type: String },
         dateOfBirth: { type: Date },
         gender: {
@@ -88,6 +89,7 @@ const DoctorSchema = {
         procedures: [{ type: String }]
     }
 }
+
 
 // Appointment Schema
 const AppointmentSchema = {
