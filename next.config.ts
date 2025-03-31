@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "plus.unsplash.com",
         port: ""
+      },
+      {
+        protocol: "https",
+        hostname: "aceternity.com",
+        port: ""
       }
     ],
   },

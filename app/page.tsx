@@ -6,6 +6,7 @@ import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
 import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
 import { ImagesSlider } from "@/components/ui/images-slider";
 import Link from "next/link";
+import { HeroParallaxDemo } from "@/components/HeroLast";
 
 export default function HeroSectionOne() {
   return (
@@ -99,6 +100,9 @@ export default function HeroSectionOne() {
             <HeroHighlightDemo />
             <ImagesSliderDemo />
           </div>
+          <div className="relative w-4xl mx-auto">
+            <HeroParallaxDemo />
+          </div>
         </motion.div>
 
       </div>
@@ -126,38 +130,38 @@ function AnimatedTestimonialsDemo() {
   const testimonials = [
     {
       quote:
-        "The attention to detail and innovative features have completely transformed our workflow. This is exactly what we've been looking for.",
-      name: "Sarah Chen",
-      designation: "Product Manager at TechFlow",
-      src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "The advanced diagnostic tools and patient management system have revolutionized our practice. It's made patient care more efficient and accurate.",
+      name: "Dr. Sarah Chen",
+      designation: "Cardiologist at HeartCare Medical",
+      src: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       quote:
-        "Implementation was seamless and the results exceeded our expectations. The platform's flexibility is remarkable.",
-      name: "Michael Rodriguez",
-      designation: "CTO at InnovateSphere",
-      src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "Implementing this electronic health records system was seamless. It has significantly improved our clinic's workflow and patient satisfaction.",
+      name: "Dr. Michael Rodriguez",
+      designation: "Pediatrician at Children's Wellness Center",
+      src: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=3528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       quote:
-        "This solution has significantly improved our team's productivity. The intuitive interface makes complex tasks simple.",
-      name: "Emily Watson",
-      designation: "Operations Director at CloudScale",
-      src: "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "The telemedicine platform has been invaluable for our rural patients. It maintains the personal connection while providing convenient care.",
+      name: "Dr. Emily Watson",
+      designation: "Family Physician at Community Health Partners",
+      src: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       quote:
-        "Outstanding support and robust features. It's rare to find a product that delivers on all its promises.",
-      name: "James Kim",
-      designation: "Engineering Lead at DataPro",
-      src: "https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "The medical imaging integration is exceptional. It's dramatically reduced our diagnosis time while improving accuracy.",
+      name: "Dr. James Kim",
+      designation: "Radiologist at Advanced Diagnostic Imaging",
+      src: "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       quote:
-        "The scalability and performance have been game-changing for our organization. Highly recommend to any growing business.",
-      name: "Lisa Thompson",
-      designation: "VP of Technology at FutureNet",
-      src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "Our surgical team's coordination has never been better thanks to this system. Real-time updates and integrated scheduling are game-changers.",
+      name: "Dr. Lisa Thompson",
+      designation: "Chief of Surgery at Metropolitan General Hospital",
+      src: "https://images.unsplash.com/photo-1551601651-bc60f254d532?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
   ];
   return <AnimatedTestimonials testimonials={testimonials} />;

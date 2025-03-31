@@ -57,7 +57,7 @@ export function DesktopNavigation() {
             </MenuItem>
             <MenuItem setActive={setActive} active={active} item="Doctors">
                 <div className="grid grid-cols-2 gap-4 text-sm bg-black/95 p-4 rounded-lg shadow-2xl">
-                    <HoveredLink href="/find-doctor" className="text-gray-200 hover:text-white hover:bg-gray-800/50 p-2 rounded">
+                    <HoveredLink href="/doctor/find-doctor" className="text-gray-200 hover:text-white hover:bg-gray-800/50 p-2 rounded">
                         Find a Doctor
                     </HoveredLink>
                     <HoveredLink href="/appointments" className="text-gray-200 hover:text-white hover:bg-gray-800/50 p-2 rounded">
