@@ -3,7 +3,7 @@ import { DoctorModel } from "@/app/models/allModels";
 import { NextResponse } from "next/server";
 
 export async function GET(
-    req: Request,
+    request: Request,
     { params }: { params: { id: string } }
 ) {
     try {

@@ -1,19 +1,17 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose';
 
+const MONGODB_URI = process.env.MONGODB_URI!;
 
-const MONGODB_URI = process.env.NEXT_PUBLIC_MONGODB_URI;
-
-if (!MONGODB_URI) throw new Error("NEXT_PUBLIC_MONGODB_URI is missing in .env.local");
-
-
-let cached: { conn: any; promise: any } = (global as any).mongoose || { conn: null, promise: null };
-
+if (!MONGODB_URI) {
+    throw new Error('Please define the MONGODB_URI environment variable');
+}
 
 export async function connectDB() {
-    if (cached.conn) return cached.conn;
-    if (!cached.promise) {
-        cached.promise = mongoose.connect(MONGODB_URI as any).then((mongoose) => mongoose);
+    if (mongoose.connections[0].readyState) {
+        // Use existing database connection
+        return;
     }
-    cached.conn = await cached.promise;
-    return cached.conn;
+
+    // Use new database connection
+    await mongoose.connect(MONGODB_URI);
 }

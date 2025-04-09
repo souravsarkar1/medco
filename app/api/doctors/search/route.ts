@@ -1,7 +1,6 @@
 import { connectDB } from "@/lib/mongodb";
 import { DoctorModel } from "@/app/models/allModels";
 import { NextResponse } from "next/server";
-
 export async function GET(req: Request) {
     let connection = false;
 

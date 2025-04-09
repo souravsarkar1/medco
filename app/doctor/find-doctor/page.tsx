@@ -116,29 +116,29 @@ const FindDoctorPage = () => {
                     <Card key={doctor._id} className="hover:shadow-lg transition-shadow">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
-                                {doctor.personalInfo.profileImage && (
+                                {doctor?.personalInfo?.profileImage && (
                                     <img
                                         src={doctor.personalInfo.profileImage}
-                                        alt={`${doctor.personalInfo.firstName} ${doctor.personalInfo.lastName}`}
+                                        alt={`${doctor?.personalInfo?.firstName || ''} ${doctor?.personalInfo?.lastName || ''}`}
                                         className="w-12 h-12 rounded-full"
                                     />
                                 )}
                                 <div>
                                     <h3 className="text-xl">
-                                        Dr. {doctor.personalInfo.firstName} {doctor.personalInfo.lastName}
+                                        Dr. {doctor?.personalInfo?.firstName || 'N/A'} {doctor?.personalInfo?.lastName || ''}
                                     </h3>
                                     <p className="text-sm text-gray-500">
-                                        {doctor.professionalDetails.specializations.join(", ")}
+                                        {doctor?.professionalDetails?.specializations?.join(", ") || 'No specialization listed'}
                                     </p>
                                 </div>
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-2">
-                                <p>Experience: {doctor.professionalDetails.yearsOfExperience} years</p>
-                                <p>Consultation Fee: ₹{doctor.consultationInfo.consultationType.online.consultationFee}</p>
+                                <p>Experience: {doctor?.professionalDetails?.yearsOfExperience || 0} years</p>
+                                <p>Consultation Fee: ₹{doctor?.consultationInfo?.consultationType?.online?.consultationFee || 'N/A'}</p>
                                 <p>
-                                    Rating: {doctor.ratings.averageRating.toFixed(1)} ⭐ ({doctor.ratings.totalReviews} reviews)
+                                    Rating: {doctor?.ratings?.averageRating?.toFixed(1) || '0.0'} ⭐ ({doctor?.ratings?.totalReviews || 0} reviews)
                                 </p>
                                 <Link
                                     href={`/doctor/book/${doctor._id}`}

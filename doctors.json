@@ -1,196 +1,85 @@
 [
     {
-        "firstName": "Amit",
-        "lastName": "Sharma",
-        "email": "amit.sharma@example.com",
-        "password": "hashedpassword1",
-        "phoneNumber": "9876543210",
-        "profileImage": "amit_profile.jpg",
-        "gender": "Male",
-        "dateOfBirth": "1980-05-15",
-        "medicalRegistrationNumber": "MRN001",
-        "qualifications": [
-            {
-                "degree": "MBBS",
-                "institution": "AIIMS Delhi",
-                "yearOfCompletion": 2004
-            },
-            {
-                "degree": "MD",
-                "institution": "AIIMS Delhi",
-                "yearOfCompletion": 2009
-            }
-        ],
-        "specializations": [
-            "Cardiology"
-        ],
-        "languages": [
-            "English",
-            "Hindi"
-        ],
-        "yearsOfExperience": 15,
+        "personalInfo": {
+            "firstName": "Amit",
+            "lastName": "Sharma",
+            "password": "hashedpassword1",
+            "profileImage": "amit_profile.jpg",
+            "email": "amit.sharma@medcare.com",
+            "phone": "+91-9876543210",
+            "address": "123 Healthcare Avenue, Mumbai, Maharashtra",
+            "bio": "Experienced cardiologist specializing in interventional cardiology and preventive cardiac care"
+        },
+        "professionalDetails": {
+            "specializations": [
+                "Cardiology",
+                "Interventional Cardiology",
+                "Nuclear Cardiology"
+            ],
+            "yearsOfExperience": 15,
+            "qualifications": [
+                "MBBS - AIIMS Delhi",
+                "MD Cardiology - PGIMER Chandigarh",
+                "Fellowship in Interventional Cardiology - Johns Hopkins"
+            ],
+            "registrationNumber": "MCI123456",
+            "languages": [
+                "English",
+                "Hindi",
+                "Marathi"
+            ],
+            "certifications": [
+                "Board Certified in Cardiology",
+                "Advanced Cardiac Life Support (ACLS)",
+                "Fellow of American College of Cardiology"
+            ]
+        },
         "consultationInfo": {
             "consultationType": {
                 "online": {
+                    "consultationFee": 500,
                     "isAvailable": true,
-                    "consultationFee": 500
+                    "timeSlots": [
+                        {
+                            "day": "Monday",
+                            "slots": [
+                                "09:00-09:30",
+                                "10:00-10:30",
+                                "11:00-11:30"
+                            ]
+                        },
+                        {
+                            "day": "Wednesday",
+                            "slots": [
+                                "14:00-14:30",
+                                "15:00-15:30",
+                                "16:00-16:30"
+                            ]
+                        }
+                    ]
                 },
                 "inPerson": {
+                    "consultationFee": 1000,
                     "isAvailable": true,
-                    "consultationFee": 700,
-                    "clinicAddress": {
-                        "city": "Delhi",
-                        "state": "Delhi",
-                        "country": "India"
-                    }
-                }
-            },
-            "consultationModes": {
-                "video": true,
-                "audio": true,
-                "chat": false
-            }
-        }
-    },
-    {
-        "firstName": "Priya",
-        "lastName": "Kapoor",
-        "email": "priya.kapoor@example.com",
-        "password": "hashedpassword2",
-        "phoneNumber": "9876543211",
-        "profileImage": "priya_profile.jpg",
-        "gender": "Female",
-        "dateOfBirth": "1985-07-20",
-        "medicalRegistrationNumber": "MRN002",
-        "qualifications": [
-            {
-                "degree": "MBBS",
-                "institution": "KMC Manipal",
-                "yearOfCompletion": 2008
-            },
-            {
-                "degree": "DNB",
-                "institution": "KMC Manipal",
-                "yearOfCompletion": 2012
-            }
-        ],
-        "specializations": [
-            "Neurology"
-        ],
-        "languages": [
-            "English",
-            "Kannada"
-        ],
-        "yearsOfExperience": 12,
-        "consultationInfo": {
-            "consultationType": {
-                "online": {
-                    "isAvailable": true,
-                    "consultationFee": 600
-                },
-                "inPerson": {
-                    "isAvailable": true,
-                    "consultationFee": 900,
-                    "clinicAddress": {
-                        "city": "Bangalore",
-                        "state": "Karnataka",
-                        "country": "India"
-                    }
-                }
-            },
-            "consultationModes": {
-                "video": true,
-                "audio": true,
-                "chat": false
-            }
-        }
-    },
-    {
-        "firstName": "Rajat",
-        "lastName": "Verma",
-        "email": "rajat.verma@example.com",
-        "password": "hashedpassword3",
-        "phoneNumber": "9876543212",
-        "profileImage": "rajat_profile.jpg",
-        "gender": "Male",
-        "dateOfBirth": "1978-03-10",
-        "medicalRegistrationNumber": "MRN003",
-        "qualifications": [
-            {
-                "degree": "MBBS",
-                "institution": "CMC Vellore",
-                "yearOfCompletion": 2002
-            }
-        ],
-        "specializations": [
-            "Orthopedics"
-        ],
-        "languages": [
-            "English",
-            "Tamil"
-        ],
-        "yearsOfExperience": 18,
-        "consultationInfo": {
-            "consultationType": {
-                "online": {
-                    "isAvailable": false
-                },
-                "inPerson": {
-                    "isAvailable": true,
-                    "consultationFee": 750,
-                    "clinicAddress": {
-                        "city": "Chennai",
-                        "state": "Tamil Nadu",
-                        "country": "India"
-                    }
-                }
-            },
-            "consultationModes": {
-                "video": true,
-                "audio": false,
-                "chat": false
-            }
-        }
-    },
-    {
-        "firstName": "Sneha",
-        "lastName": "Das",
-        "email": "sneha.das@example.com",
-        "password": "hashedpassword4",
-        "phoneNumber": "9876543213",
-        "profileImage": "sneha_profile.jpg",
-        "gender": "Female",
-        "dateOfBirth": "1982-12-01",
-        "medicalRegistrationNumber": "MRN004",
-        "qualifications": [
-            {
-                "degree": "MBBS",
-                "institution": "PGIMER Chandigarh",
-                "yearOfCompletion": 2006
-            }
-        ],
-        "specializations": [
-            "Pediatrics"
-        ],
-        "languages": [
-            "English",
-            "Bengali"
-        ],
-        "yearsOfExperience": 14,
-        "consultationInfo": {
-            "consultationType": {
-                "online": {
-                    "isAvailable": true,
-                    "consultationFee": 400
-                },
-                "inPerson": {
-                    "isAvailable": true,
-                    "consultationFee": 650,
-                    "clinicAddress": {
-                        "city": "Kolkata",
-                        "state": "West Bengal",
-                        "country": "India"
-                    }
+                    "location": "Sharma Heart Clinic, Bandra West, Mumbai",
+                    "timeSlots": [
+                        {
+                            "day": "Tuesday",
+                            "slots": [
+                                "10:00-10:30",
+                                "11:00-11:30",
+                                "12:00-12:30"
+                            ]
+                        },
+                        {
+                            "day": "Thursday",
+                            "slots": [
+                                "16:00-16:30",
+                                "17:00-17:30",
+                                "18:00-18:30"
+                            ]
+                        }
+                    ]
                 }
             },
             "consultationModes": {
@@ -198,38 +87,101 @@
                 "audio": true,
                 "chat": true
             }
+        },
+        "ratings": {
+            "averageRating": 4.8,
+            "totalReviews": 156,
+            "reviews": [
+                {
+                    "patientId": "patient123",
+                    "rating": 5,
+                    "comment": "Excellent diagnosis and treatment plan. Very thorough and professional.",
+                    "date": "2024-01-15"
+                }
+            ]
         }
     },
     {
-        "firstName": "Rahul",
-        "lastName": "Mehta",
-        "email": "rahul.mehta@example.com",
-        "password": "hashedpassword5",
-        "phoneNumber": "9876543214",
-        "profileImage": "rahul_profile.jpg",
-        "gender": "Male",
-        "dateOfBirth": "1981-09-25",
-        "medicalRegistrationNumber": "MRN005",
-        "qualifications": [
-            {
-                "degree": "MBBS",
-                "institution": "JIPMER",
-                "yearOfCompletion": 2005
-            }
-        ],
-        "specializations": [
-            "General Medicine"
-        ],
-        "languages": [
-            "English",
-            "Gujarati"
-        ],
-        "yearsOfExperience": 16,
+        "personalInfo": {
+            "firstName": "Priya",
+            "lastName": "Kapoor",
+            "password": "hashedpassword2",
+            "profileImage": "priya_profile.jpg",
+            "email": "priya.kapoor@medcare.com",
+            "phone": "+91-9876543211",
+            "address": "456 Neuro Center, Delhi",
+            "bio": "Specialized in treating neurological disorders with a focus on stroke prevention and treatment"
+        },
+        "professionalDetails": {
+            "specializations": [
+                "Neurology",
+                "Stroke Medicine",
+                "Neuro-rehabilitation"
+            ],
+            "yearsOfExperience": 12,
+            "qualifications": [
+                "MBBS - Maulana Azad Medical College",
+                "MD Neurology - AIIMS Delhi",
+                "Fellowship in Stroke Medicine - Mayo Clinic"
+            ],
+            "registrationNumber": "MCI123457",
+            "languages": [
+                "English",
+                "Hindi",
+                "Punjabi"
+            ],
+            "certifications": [
+                "American Board of Psychiatry and Neurology",
+                "Stroke Certification - World Stroke Organization",
+                "Fellowship of Royal College of Physicians"
+            ]
+        },
         "consultationInfo": {
             "consultationType": {
                 "online": {
+                    "consultationFee": 600,
                     "isAvailable": true,
-                    "consultationFee": 500
+                    "timeSlots": [
+                        {
+                            "day": "Monday",
+                            "slots": [
+                                "11:00-11:30",
+                                "12:00-12:30",
+                                "13:00-13:30"
+                            ]
+                        },
+                        {
+                            "day": "Friday",
+                            "slots": [
+                                "15:00-15:30",
+                                "16:00-16:30",
+                                "17:00-17:30"
+                            ]
+                        }
+                    ]
+                },
+                "inPerson": {
+                    "consultationFee": 1200,
+                    "isAvailable": true,
+                    "location": "Kapoor Neurology Clinic, South Extension, Delhi",
+                    "timeSlots": [
+                        {
+                            "day": "Tuesday",
+                            "slots": [
+                                "09:00-09:30",
+                                "10:00-10:30",
+                                "11:00-11:30"
+                            ]
+                        },
+                        {
+                            "day": "Thursday",
+                            "slots": [
+                                "14:00-14:30",
+                                "15:00-15:30",
+                                "16:00-16:30"
+                            ]
+                        }
+                    ]
                 }
             },
             "consultationModes": {
@@ -237,237 +189,295 @@
                 "audio": true,
                 "chat": false
             }
+        },
+        "ratings": {
+            "averageRating": 4.7,
+            "totalReviews": 123,
+            "reviews": [
+                {
+                    "patientId": "patient124",
+                    "rating": 5,
+                    "comment": "Dr. Kapoor's expertise in neurology is exceptional. Very caring approach.",
+                    "date": "2024-01-10"
+                }
+            ]
         }
     },
     {
-        "firstName": "Ananya",
-        "lastName": "Iyer",
-        "email": "ananya.iyer@example.com",
-        "password": "hashedpassword6",
-        "phoneNumber": "9876543215",
-        "profileImage": "ananya_profile.jpg",
-        "gender": "Female",
-        "dateOfBirth": "1986-04-15",
-        "medicalRegistrationNumber": "MRN006",
-        "qualifications": [
-            {
-                "degree": "MBBS",
-                "institution": "AFMC Pune",
-                "yearOfCompletion": 2010
-            }
-        ],
-        "specializations": [
-            "Dermatology"
-        ],
-        "languages": [
-            "English",
-            "Marathi"
-        ],
-        "yearsOfExperience": 11,
+        "personalInfo": {
+            "firstName": "Rajat",
+            "lastName": "Verma",
+            "password": "hashedpassword3",
+            "profileImage": "rajat_profile.jpg",
+            "email": "rajat.verma@medcare.com",
+            "phone": "+91-9876543212",
+            "address": "789 Bone & Joint Clinic, Bangalore",
+            "bio": "Expert in advanced orthopedic procedures and sports medicine"
+        },
+        "professionalDetails": {
+            "specializations": [
+                "Orthopedics",
+                "Sports Medicine",
+                "Joint Replacement"
+            ],
+            "yearsOfExperience": 18,
+            "qualifications": [
+                "MBBS - KEM Hospital Mumbai",
+                "MS Orthopedics - JIPMER",
+                "Fellowship in Sports Medicine - Stanford University"
+            ],
+            "registrationNumber": "MCI123458",
+            "languages": [
+                "English",
+                "Hindi",
+                "Kannada"
+            ],
+            "certifications": [
+                "American Board of Orthopedic Surgery",
+                "FIFA Sports Medicine Certification",
+                "Advanced Trauma Life Support"
+            ]
+        },
         "consultationInfo": {
             "consultationType": {
                 "online": {
+                    "consultationFee": 750,
                     "isAvailable": true,
+                    "timeSlots": [
+                        {
+                            "day": "Wednesday",
+                            "slots": [
+                                "09:00-09:30",
+                                "10:00-10:30",
+                                "11:00-11:30"
+                            ]
+                        },
+                        {
+                            "day": "Saturday",
+                            "slots": [
+                                "14:00-14:30",
+                                "15:00-15:30",
+                                "16:00-16:30"
+                            ]
+                        }
+                    ]
+                },
+                "inPerson": {
+                    "consultationFee": 1500,
+                    "isAvailable": true,
+                    "location": "Verma Orthopedic Center, Indiranagar, Bangalore",
+                    "timeSlots": [
+                        {
+                            "day": "Monday",
+                            "slots": [
+                                "10:00-10:30",
+                                "11:00-11:30",
+                                "12:00-12:30"
+                            ]
+                        },
+                        {
+                            "day": "Friday",
+                            "slots": [
+                                "16:00-16:30",
+                                "17:00-17:30",
+                                "18:00-18:30"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "consultationModes": {
+                "video": true,
+                "audio": true,
+                "chat": true
+            }
+        },
+        "ratings": {
+            "averageRating": 4.9,
+            "totalReviews": 189,
+            "reviews": [
+                {
+                    "patientId": "patient125",
+                    "rating": 5,
+                    "comment": "Outstanding surgeon. My knee replacement surgery was a complete success.",
+                    "date": "2024-01-05"
+                }
+            ]
+        }
+    },
+    {
+        "personalInfo": {
+            "firstName": "Sneha",
+            "lastName": "Das",
+            "password": "hashedpassword4",
+            "profileImage": "sneha_profile.jpg"
+        },
+        "professionalDetails": {
+            "specializations": [
+                "Pediatrics"
+            ],
+            "yearsOfExperience": 14
+        },
+        "consultationInfo": {
+            "consultationType": {
+                "online": {
+                    "consultationFee": 400
+                }
+            }
+        },
+        "ratings": {
+            "averageRating": 4.6,
+            "totalReviews": 145
+        }
+    },
+    {
+        "personalInfo": {
+            "firstName": "Rahul",
+            "lastName": "Mehta",
+            "password": "hashedpassword5",
+            "profileImage": "rahul_profile.jpg"
+        },
+        "professionalDetails": {
+            "specializations": [
+                "General Medicine"
+            ],
+            "yearsOfExperience": 16
+        },
+        "consultationInfo": {
+            "consultationType": {
+                "online": {
+                    "consultationFee": 500
+                }
+            }
+        },
+        "ratings": {
+            "averageRating": 4.5,
+            "totalReviews": 167
+        }
+    },
+    {
+        "personalInfo": {
+            "firstName": "Ananya",
+            "lastName": "Iyer",
+            "password": "hashedpassword6",
+            "profileImage": "ananya_profile.jpg"
+        },
+        "professionalDetails": {
+            "specializations": [
+                "Dermatology"
+            ],
+            "yearsOfExperience": 11
+        },
+        "consultationInfo": {
+            "consultationType": {
+                "online": {
                     "consultationFee": 450
                 }
-            },
-            "consultationModes": {
-                "video": true,
-                "audio": false,
-                "chat": true
             }
+        },
+        "ratings": {
+            "averageRating": 4.7,
+            "totalReviews": 134
         }
     },
     {
-        "firstName": "Vikram",
-        "lastName": "Chopra",
-        "email": "vikram.chopra@example.com",
-        "password": "hashedpassword7",
-        "phoneNumber": "9876543216",
-        "profileImage": "vikram_profile.jpg",
-        "gender": "Male",
-        "dateOfBirth": "1979-11-10",
-        "medicalRegistrationNumber": "MRN007",
-        "qualifications": [
-            {
-                "degree": "MBBS",
-                "institution": "KGMU Lucknow",
-                "yearOfCompletion": 2003
-            }
-        ],
-        "specializations": [
-            "Psychiatry"
-        ],
-        "languages": [
-            "English",
-            "Hindi"
-        ],
-        "yearsOfExperience": 19,
+        "personalInfo": {
+            "firstName": "Vikram",
+            "lastName": "Chopra",
+            "password": "hashedpassword7",
+            "profileImage": "vikram_profile.jpg"
+        },
+        "professionalDetails": {
+            "specializations": [
+                "Psychiatry"
+            ],
+            "yearsOfExperience": 19
+        },
         "consultationInfo": {
             "consultationType": {
                 "online": {
-                    "isAvailable": true,
                     "consultationFee": 700
                 }
-            },
-            "consultationModes": {
-                "video": false,
-                "audio": true,
-                "chat": false
             }
+        },
+        "ratings": {
+            "averageRating": 4.8,
+            "totalReviews": 178
         }
     },
     {
-        "firstName": "Suman",
-        "lastName": "Ghosh",
-        "email": "suman.ghosh@example.com",
-        "password": "hashedpassword8",
-        "phoneNumber": "9876543217",
-        "profileImage": "suman_profile.jpg",
-        "gender": "Male",
-        "dateOfBirth": "1983-06-05",
-        "medicalRegistrationNumber": "MRN008",
-        "qualifications": [
-            {
-                "degree": "MBBS",
-                "institution": "RG Kar Medical College",
-                "yearOfCompletion": 2007
-            },
-            {
-                "degree": "MS",
-                "institution": "NRS Medical College",
-                "yearOfCompletion": 2012
-            }
-        ],
-        "specializations": [
-            "General Surgery"
-        ],
-        "languages": [
-            "English",
-            "Bengali"
-        ],
-        "yearsOfExperience": 14,
+        "personalInfo": {
+            "firstName": "Suman",
+            "lastName": "Ghosh",
+            "password": "hashedpassword8",
+            "profileImage": "suman_profile.jpg"
+        },
+        "professionalDetails": {
+            "specializations": [
+                "General Surgery"
+            ],
+            "yearsOfExperience": 20
+        },
         "consultationInfo": {
             "consultationType": {
                 "online": {
-                    "isAvailable": true,
-                    "consultationFee": 600
-                },
-                "inPerson": {
-                    "isAvailable": true,
-                    "consultationFee": 900,
-                    "clinicAddress": {
-                        "city": "Kolkata",
-                        "state": "West Bengal",
-                        "country": "India"
-                    }
+                    "consultationFee": 800
                 }
-            },
-            "consultationModes": {
-                "video": true,
-                "audio": true,
-                "chat": true
             }
+        },
+        "ratings": {
+            "averageRating": 4.9,
+            "totalReviews": 201
         }
     },
     {
-        "firstName": "Meera",
-        "lastName": "Nair",
-        "email": "meera.nair@example.com",
-        "password": "hashedpassword9",
-        "phoneNumber": "9876543218",
-        "profileImage": "meera_profile.jpg",
-        "gender": "Female",
-        "dateOfBirth": "1987-08-20",
-        "medicalRegistrationNumber": "MRN009",
-        "qualifications": [
-            {
-                "degree": "MBBS",
-                "institution": "Madras Medical College",
-                "yearOfCompletion": 2011
-            },
-            {
-                "degree": "MD",
-                "institution": "CMC Vellore",
-                "yearOfCompletion": 2016
-            }
-        ],
-        "specializations": [
-            "Gynecology"
-        ],
-        "languages": [
-            "English",
-            "Tamil"
-        ],
-        "yearsOfExperience": 10,
+        "personalInfo": {
+            "firstName": "Meera",
+            "lastName": "Nair",
+            "password": "hashedpassword9",
+            "profileImage": "meera_profile.jpg"
+        },
+        "professionalDetails": {
+            "specializations": [
+                "Gynecology"
+            ],
+            "yearsOfExperience": 13
+        },
         "consultationInfo": {
             "consultationType": {
                 "online": {
-                    "isAvailable": true,
-                    "consultationFee": 500
-                },
-                "inPerson": {
-                    "isAvailable": true,
-                    "consultationFee": 800,
-                    "clinicAddress": {
-                        "city": "Chennai",
-                        "state": "Tamil Nadu",
-                        "country": "India"
-                    }
+                    "consultationFee": 550
                 }
-            },
-            "consultationModes": {
-                "video": true,
-                "audio": true,
-                "chat": false
             }
+        },
+        "ratings": {
+            "averageRating": 4.6,
+            "totalReviews": 143
         }
     },
     {
-        "firstName": "Rohit",
-        "lastName": "Patel",
-        "email": "rohit.patel@example.com",
-        "password": "hashedpassword10",
-        "phoneNumber": "9876543219",
-        "profileImage": "rohit_profile.jpg",
-        "gender": "Male",
-        "dateOfBirth": "1984-01-18",
-        "medicalRegistrationNumber": "MRN010",
-        "qualifications": [
-            {
-                "degree": "MBBS",
-                "institution": "BJ Medical College",
-                "yearOfCompletion": 2008
-            },
-            {
-                "degree": "MD",
-                "institution": "BJ Medical College",
-                "yearOfCompletion": 2013
-            }
-        ],
-        "specializations": [
-            "Endocrinology"
-        ],
-        "languages": [
-            "English",
-            "Gujarati"
-        ],
-        "yearsOfExperience": 13,
+        "personalInfo": {
+            "firstName": "Rohit",
+            "lastName": "Patel",
+            "password": "hashedpassword10",
+            "profileImage": "rohit_profile.jpg"
+        },
+        "professionalDetails": {
+            "specializations": [
+                "Endocrinology"
+            ],
+            "yearsOfExperience": 15
+        },
         "consultationInfo": {
             "consultationType": {
                 "online": {
-                    "isAvailable": true,
-                    "consultationFee": 700
-                },
-                "inPerson": {
-                    "isAvailable": false
+                    "consultationFee": 650
                 }
-            },
-            "consultationModes": {
-                "video": true,
-                "audio": false,
-                "chat": false
             }
+        },
+        "ratings": {
+            "averageRating": 4.7,
+            "totalReviews": 156
         }
     }
 ]
