@@ -1,4 +1,10 @@
-"use client"
+'use client';
+
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { loginUser } from '@/lib/redux/features/authSlice';
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -15,55 +21,60 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useState } from "react"
 import { toast } from "sonner"
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react"
+
+type LoginFormProps = React.ComponentPropsWithoutRef<"div"> & {
+  searchParams?: { [key: string]: string | string[] | undefined }
+};
 
 export default function LoginForm({
   className,
+  searchParams,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: LoginFormProps) {
+  const dispatch = useAppDispatch();
+  const { loading, error, isAuthenticated } = useAppSelector((state) => state.auth);
   const router = useRouter();
+
+  // Remove searchParams from the props spread to avoid passing it to the div
+  const { searchParams: _, ...divProps } = props;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/');
+    }
+  }, [isAuthenticated, router]);
 
   const [userData, setUserData] = useState({
     email: "",
     password: ""
   })
-  const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); // Prevents page refresh
+    event.preventDefault();
 
     if (!userData.email || !userData.password) {
       toast.error("Please fill in all fields.");
       return;
     }
-    setIsLoading(true);
-    try {
 
-      console.log("User Data:", userData);
-      const res = await axios.post("/api/auth/login", userData);
-      console.log(res.data);
-      localStorage.setItem('token', res.data.token);
+    try {
+      const result = await dispatch(loginUser(userData)).unwrap();
       toast.success("Login successful");
-      if (res.data.user?.stepsCompleted === 2) {
-        setIsLoading(false);
+
+      // Check stepsCompleted from the user object
+      if (result.user?.stepsCompleted === 2) {
+        // If user has completed all steps, redirect to home
         router.push("/");
-      }
-      else {
-        setIsLoading(false);
+      } else {
+        // If user hasn't completed all steps, redirect to data collection
         router.push("/user-data-collect");
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong.");
-      setIsLoading(false);
+    } catch (error: any) {
+      toast.error(error || "Login failed");
     }
-    finally {
-      setIsLoading(false);
-    }
-  }
+  };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4" {...divProps}>
       <div className={cn("grid place-items-center w-full", className)} {...props}>
         <Card className="w-full max-w-md">
           <CardHeader>
@@ -105,7 +116,7 @@ export default function LoginForm({
                   />
                 </div>
                 <Button type="submit" className="w-full">
-                  {isLoading ? <Loader2 className="animate-spin" /> : "Login"}
+                  {loading ? <Loader2 className="animate-spin" /> : "Login"}
                 </Button>
                 <Button variant="outline" className="w-full">
                   Login with Google

@@ -1,7 +1,9 @@
-'use client'
+'use client';
 
+import { AuthMiddleware } from '@/components/AuthMiddleware';
+import { useAppSelector } from '@/lib/redux/hooks';
+import axiosInstance from '@/lib/axios';
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -54,8 +56,9 @@ interface Doctor {
 }
 
 const BookDoctorPage = () => {
-    const params = useParams();
     const router = useRouter();
+    const params = useParams();
+    const { isAuthenticated } = useAppSelector((state) => state.auth);
     const [doctor, setDoctor] = useState<Doctor | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -73,21 +76,24 @@ const BookDoctorPage = () => {
 
     const isDateDisabled = (date: Date) => {
         if (date < new Date()) return true;
+        if (!doctor) return true;  // Add this check
 
         const dayName = getDayName(date);
         const consultationType = bookingData.appointmentType === 'Online'
-            ? doctor?.consultationInfo.consultationType.online
-            : doctor?.consultationInfo.consultationType.inPerson;
+            ? doctor.consultationInfo.consultationType.online
+            : doctor.consultationInfo.consultationType.inPerson;
 
-        const hasSlots = consultationType?.timeSlots.some(slot => slot.day === dayName);
+        // Add null check before accessing timeSlots
+        if (!consultationType?.timeSlots) return true;
+
+        const hasSlots = consultationType.timeSlots.some(slot => slot.day === dayName);
         return !hasSlots;
     };
 
     useEffect(() => {
         const fetchDoctor = async () => {
             try {
-                const response = await axios.get(`/api/doctors/${params.id}`);
-                // The API returns { doctor: { ... } }
+                const response = await axiosInstance.get(`/api/doctors/${params.id}`);
                 setDoctor(response.data.doctor);
             } catch (error) {
                 console.error("Error fetching doctor:", error);
@@ -110,17 +116,65 @@ const BookDoctorPage = () => {
                 const dayName = getDayName(selectedDate);
                 const daySlot = consultationType.timeSlots.find(slot => slot.day === dayName);
 
+                // Debug logging
+                console.log('Day slot found:', daySlot);
+
                 if (daySlot?.slots) {
-                    // Convert string slots to TimeSlot objects
-                    const timeSlots: TimeSlot[] = daySlot.slots.map(slot => {
-                        const [startTime, endTime] = slot.split('-');
-                        return {
-                            startTime,
-                            endTime,
-                            isBooked: false // You might want to check this against your booking data
-                        };
-                    });
-                    setAvailableSlots(timeSlots);
+                    const fetchBookedSlots = async () => {
+                        try {
+                            const formattedDate = selectedDate.toISOString().split('T')[0];
+                            console.log('Fetching booked slots for:', {
+                                doctorId: doctor._id,
+                                date: formattedDate,
+                                appointmentType: bookingData.appointmentType
+                            });
+
+                            const response = await axiosInstance.get('/api/appointments/booked-slots', {
+                                params: {
+                                    doctorId: doctor._id,
+                                    date: formattedDate,
+                                    appointmentType: bookingData.appointmentType
+                                }
+                            });
+
+                            const bookedSlots = response.data.bookedSlots;
+                            console.log('Booked slots:', bookedSlots);
+
+                            // Convert slots to TimeSlot objects
+                            const timeSlots: TimeSlot[] = daySlot.slots
+                                .filter((slot: any) => {
+                                    if (typeof slot === 'string') {
+                                        const [startTime, endTime] = slot.split('-');
+                                        const isBooked = bookedSlots.some(
+                                            (bookedSlot: any) =>
+                                                bookedSlot.startTime === startTime &&
+                                                bookedSlot.endTime === endTime
+                                        );
+                                        return !isBooked;
+                                    }
+                                    return !slot.isBooked;
+                                })
+                                .map(slot => {
+                                    if (typeof slot === 'string') {
+                                        const [startTime, endTime] = slot.split('-');
+                                        return {
+                                            startTime,
+                                            endTime,
+                                            isBooked: false
+                                        };
+                                    }
+                                    return slot;
+                                });
+
+                            console.log('Available time slots:', timeSlots);
+                            setAvailableSlots(timeSlots);
+                        } catch (error) {
+                            console.error('Error fetching booked slots:', error);
+                            setAvailableSlots([]);
+                        }
+                    };
+
+                    fetchBookedSlots();
                 } else {
                     setAvailableSlots([]);
                 }
@@ -170,40 +224,45 @@ const BookDoctorPage = () => {
                 return;
             }
 
-            setLoading(true);
-            const token = localStorage.getItem('token');
-
-            if (!token) {
+            if (!isAuthenticated) {
                 toast.error("Please login to book an appointment");
                 router.push('/login');
                 return;
             }
+
+            setLoading(true);
 
             const [startTime, endTime] = bookingData.selectedSlot.split('-');
             const consultationFee = bookingData.appointmentType === 'Online'
                 ? doctor?.consultationInfo.consultationType.online.consultationFee
                 : doctor?.consultationInfo.consultationType.inPerson?.consultationFee;
 
-            const response = await axios.post('/api/appointments/create', {
+            // Format date to YYYY-MM-DD
+            const formattedDate = selectedDate.toISOString().split('T')[0];
+
+            const response = await axiosInstance.post('/api/appointments/create', {
                 doctorId: params.id,
                 appointmentType: bookingData.appointmentType,
                 consultationType: bookingData.consultationType,
                 timeSlot: {
-                    date: selectedDate,
+                    date: formattedDate,
                     startTime,
                     endTime
                 },
                 consultationFee
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
             });
 
             toast.success("Appointment booked successfully!");
             router.push('/appointments');
         } catch (error: any) {
             console.error("Booking error:", error);
+
+            if (error.response?.status === 401) {
+                toast.error("Your session has expired. Please login again.");
+                router.push('/login');
+                return;
+            }
+
             toast.error(error.response?.data?.error || "Failed to book appointment");
         } finally {
             setLoading(false);
@@ -227,151 +286,153 @@ const BookDoctorPage = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-8 mt-10">
-            <Card className="max-w-2xl mx-auto shadow-lg">
-                <CardHeader className="border-b">
-                    <CardTitle className="text-2xl font-bold text-primary">Book Appointment</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6 pt-6">
-                    <div className="space-y-2">
-                        <h2 className="text-xl font-semibold text-foreground">
-                            Dr. {doctor.personalInfo.firstName} {doctor.personalInfo.lastName}
-                        </h2>
-                        <p className="text-muted-foreground">
-                            {doctor.professionalDetails.specializations?.join(", ")}
-                        </p>
-                    </div>
-
-                    <div className="space-y-6">
+        <AuthMiddleware>
+            <div className="container mx-auto px-4 py-8 mt-10">
+                <Card className="max-w-2xl mx-auto shadow-lg">
+                    <CardHeader className="border-b">
+                        <CardTitle className="text-2xl font-bold text-primary">Book Appointment</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6 pt-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                Appointment Type
-                            </label>
-                            <Select
-                                value={bookingData.appointmentType}
-                                onValueChange={(value) => {
-                                    setBookingData({
-                                        ...bookingData,
-                                        appointmentType: value,
-                                        consultationType: value === 'Online' ? 'Video' : 'Physical',
-                                        selectedSlot: ''
-                                    });
-                                    setSelectedDate(null);
-                                    setAvailableSlots([]);
-                                }}
-                            >
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select appointment type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {getAvailableAppointmentTypes().map((type) => (
-                                        <SelectItem key={type} value={type}>
-                                            {type === 'InPerson' ? 'In Person' : type}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <h2 className="text-xl font-semibold text-foreground">
+                                Dr. {doctor.personalInfo.firstName} {doctor.personalInfo.lastName}
+                            </h2>
+                            <p className="text-muted-foreground">
+                                {doctor.professionalDetails.specializations?.join(", ")}
+                            </p>
                         </div>
 
-                        {bookingData.appointmentType === 'Online' && (
+                        <div className="space-y-6">
                             <div className="space-y-2">
                                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    Consultation Type
+                                    Appointment Type
                                 </label>
                                 <Select
-                                    value={bookingData.consultationType}
-                                    onValueChange={(value) => setBookingData({
-                                        ...bookingData,
-                                        consultationType: value
-                                    })}
+                                    value={bookingData.appointmentType}
+                                    onValueChange={(value) => {
+                                        setBookingData({
+                                            ...bookingData,
+                                            appointmentType: value,
+                                            consultationType: value === 'Online' ? 'Video' : 'Physical',
+                                            selectedSlot: ''
+                                        });
+                                        setSelectedDate(null);
+                                        setAvailableSlots([]);
+                                    }}
                                 >
                                     <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select consultation type" />
+                                        <SelectValue placeholder="Select appointment type" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {getAvailableConsultationTypes().map((type) => (
+                                        {getAvailableAppointmentTypes().map((type) => (
                                             <SelectItem key={type} value={type}>
-                                                {type}
+                                                {type === 'InPerson' ? 'In Person' : type}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                             </div>
-                        )}
 
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium leading-none">
-                                Select Date
-                            </label>
-                            <Calendar
-                                mode="single"
-                                selected={selectedDate as any}
-                                onSelect={setSelectedDate as any}
-                                className="rounded-md border"
-                                disabled={isDateDisabled}
-                            />
-                        </div>
-
-                        {selectedDate && (
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium leading-none">
-                                    Select Time Slot
-                                </label>
-                                {availableSlots.length > 0 ? (
+                            {bookingData.appointmentType === 'Online' && (
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                        Consultation Type
+                                    </label>
                                     <Select
-                                        value={bookingData.selectedSlot}
-                                        onValueChange={(value) => setBookingData(prev => ({
-                                            ...prev,
-                                            selectedSlot: value
-                                        }))}
+                                        value={bookingData.consultationType}
+                                        onValueChange={(value) => setBookingData({
+                                            ...bookingData,
+                                            consultationType: value
+                                        })}
                                     >
                                         <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Select time slot" />
+                                            <SelectValue placeholder="Select consultation type" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {availableSlots.map((slot) => (
-                                                <SelectItem
-                                                    key={`${slot.startTime}-${slot.endTime}`}
-                                                    value={`${slot.startTime}-${slot.endTime}`}
-                                                >
-                                                    {`${slot.startTime} - ${slot.endTime}`}
+                                            {getAvailableConsultationTypes().map((type) => (
+                                                <SelectItem key={type} value={type}>
+                                                    {type}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
-                                ) : (
-                                    <p className="text-sm text-muted-foreground">
-                                        No time slots available for this date
-                                    </p>
-                                )}
-                            </div>
-                        )}
-
-                        <div className="rounded-lg bg-muted p-4">
-                            <p className="font-medium text-foreground">Consultation Fee:</p>
-                            <p className="text-2xl font-bold text-primary mt-1">
-                                ₹{bookingData.appointmentType === 'Online'
-                                    ? doctor.consultationInfo.consultationType.online.consultationFee
-                                    : doctor.consultationInfo.consultationType.inPerson?.consultationFee
-                                }
-                            </p>
-                        </div>
-
-                        <Button
-                            onClick={handleBooking}
-                            className="w-full text-base font-semibold"
-                            disabled={loading || !selectedDate || !bookingData.selectedSlot}
-                        >
-                            {loading ? (
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            ) : (
-                                "Confirm Booking"
+                                </div>
                             )}
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium leading-none">
+                                    Select Date
+                                </label>
+                                <Calendar
+                                    mode="single"
+                                    selected={selectedDate as any}
+                                    onSelect={setSelectedDate as any}
+                                    className="rounded-md border"
+                                    disabled={isDateDisabled}
+                                />
+                            </div>
+
+                            {selectedDate && (
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium leading-none">
+                                        Select Time Slot
+                                    </label>
+                                    {availableSlots.length > 0 ? (
+                                        <Select
+                                            value={bookingData.selectedSlot}
+                                            onValueChange={(value) => setBookingData(prev => ({
+                                                ...prev,
+                                                selectedSlot: value
+                                            }))}
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Select time slot" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {availableSlots.map((slot) => (
+                                                    <SelectItem
+                                                        key={`${slot.startTime}-${slot.endTime}`}
+                                                        value={`${slot.startTime}-${slot.endTime}`}
+                                                    >
+                                                        {`${slot.startTime} - ${slot.endTime}`}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground">
+                                            No time slots available for this date
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+
+                            <div className="rounded-lg bg-muted p-4">
+                                <p className="font-medium text-foreground">Consultation Fee:</p>
+                                <p className="text-2xl font-bold text-primary mt-1">
+                                    ₹{bookingData.appointmentType === 'Online'
+                                        ? doctor.consultationInfo.consultationType.online.consultationFee
+                                        : doctor.consultationInfo.consultationType.inPerson?.consultationFee
+                                    }
+                                </p>
+                            </div>
+
+                            <Button
+                                onClick={handleBooking}
+                                className="w-full text-base font-semibold"
+                                disabled={loading || !selectedDate || !bookingData.selectedSlot}
+                            >
+                                {loading ? (
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                ) : (
+                                    "Confirm Booking"
+                                )}
+                            </Button>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        </AuthMiddleware>
     );
 };
 
