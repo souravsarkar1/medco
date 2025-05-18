@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { HoveredLink, Menu, MenuItem } from "./ui/navbar-menu";
+import Link from "next/link";
 
 export function DesktopNavigation() {
     const [active, setActive] = useState<string | null>(null);
@@ -67,7 +68,11 @@ export function DesktopNavigation() {
                         Get a Second Opinion
                     </HoveredLink>
                 </div>
+
             </MenuItem>
+            <Link href="/emergency" >
+                Emergency
+            </Link>
         </Menu>
     );
 }
